@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Review - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+  <div class="page-header">
+    <h2>Goods Price Tracker</h2>
+    <div class="top-right">
+      <a href="{% url 'dashboard' %}"><button type="button">Return to Dashboard</button></a>
+    </div>
+  </div>
+
+  <h3>Submit Your Review</h3>
+  <textarea id="reviewText" placeholder="Write your review..."></textarea>
+  <button onclick="submitReview()">Submit</button>
+  <div id="submittedReviews"></div>
+</body>
+</html>

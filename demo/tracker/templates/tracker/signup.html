@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="page-header"><h2>Goods Price Tracker</h2></div>
+  <div class="title"><h3>Sign Up</h3></div>
+
+  <div class="column-form">
+    <input type="text" placeholder="Username">
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <a href="{% url 'dashboard' %}"><button type="button">Submit</button></a>
+  <a href="{% url 'login' %}"><button type="button">Log In</button></a>
+  <a href="{% url 'dashboard' %}"><button type="button">Search Without Authentication</button></a>
+  </div>
+</body>
+</html>

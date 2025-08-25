@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Watchlist - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+  <div class="page-header">
+    <h2>Goods Price Tracker</h2>
+    <div class="top-right">
+      <a href="{% url 'dashboard' %}"><button type="button">Exit</button></a>
+    </div>
+  </div>
+
+  <h3 id="editTitle">Edit Watchlist</h3>
+  <div style="display: flex; justify-content: center; gap: 10px; margin: 10px 0;">
+    <button onclick="addItem()">Add Items</button>
+    <button onclick="deleteItem()">Delete Item</button>
+    <button onclick="deleteWatchlist()">Delete Watchlist</button>
+  </div>
+  <div id="watchlistItems"></div>
+</body>
+</html>

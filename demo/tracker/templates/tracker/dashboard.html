@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+  <div class="page-header">
+    <h2>Goods Price Tracker</h2>
+    <div class="top-right">
+      <a href="{% url 'signup' %}"><button type="button">Close</button></a>
+    </div>
+  </div>
+
+  <div class="row center">
+    <button onclick="addWatchlist()">Add Watchlist</button>
+    <a href="{% url 'search' %}"><button type="button">Search</button></a>
+    <a href="{% url 'review' %}"><button type="button">Enter Review</button></a>
+  </div>
+
+  <div id="watchlists" style="margin-top: 20px;"></div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="page-header">
+    <h2>Goods Price Tracker</h2>
+    <div class="top-right">
+      <a href="{% url 'dashboard' %}"><button type="button">Return to Dashboard</button></a>
+    </div>
+  </div>
+
+  <h3>Search Products</h3>
+  <div class="column-form">
+    <input type="text" placeholder="Search Product">
+    <button>Search</button>
+  </div>
+</body>
+</html>
