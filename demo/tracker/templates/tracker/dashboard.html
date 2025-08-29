@@ -15,12 +15,17 @@
     </div>
   </div>
 
-  <div class="row center">
+  <div class="rowcenter">
     <button onclick="addWatchlist()">Add Watchlist</button>
     <a href="{% url 'search' %}"><button type="button">Search</button></a>
     <a href="{% url 'review' %}"><button type="button">Enter Review</button></a>
   </div>
 
   <div id="watchlists" style="margin-top: 20px;"></div>
+  {% if guest %}
+  <p>You are browsing as guest. Only search is available.</p>
+  <!-- hide watchlist/review buttons -->
+{% endif %}
+
 </body>
 </html>

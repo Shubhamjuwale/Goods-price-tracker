@@ -123,11 +123,11 @@ button:hover, .link-button:hover {
 
 .link-button:hover {
   background: #007BFF;
-  color: #ffffff;
+  color: #000000;
 }
 
 
-/* Watchlist Cards */
+/* Watchlist */
 .watchlist-box {
   border: 1px solid #ddd;
   padding: 15px;
@@ -168,3 +168,22 @@ button:hover, .link-button:hover {
     width: 90%;
   }
 }
+.rowcenter {
+  display: flex;              /* Arrange children in a row */
+  justify-content: center;    /* Center them horizontally */
+  align-items: center;        /* Align them vertically */
+  gap: 15px;                  /* Add spacing between buttons */
+  margin-top: 20px;
+}
+
+.rowcenter button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 4px;
+}
+

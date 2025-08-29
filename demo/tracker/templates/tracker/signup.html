@@ -10,13 +10,53 @@
   <div class="page-header"><h2>Goods Price Tracker</h2></div>
   <div class="title"><h3>Sign Up</h3></div>
 
+  <form method="post">
+    {% csrf_token %}
+    <div class="column-form">
+
+      <!-- Username -->
+      <input type="text" name="username" placeholder="Username" value="{{ form.username.value|default:'' }}">
+      {% if form.username.errors %}
+        <div class="error">{{ form.username.errors.0 }}</div>
+      {% endif %}
+
+      <!-- Email -->
+      <input type="email" name="email" placeholder="Email Address" value="{{ form.email.value|default:'' }}">
+      {% if form.email.errors %}
+        <div class="error">{{ form.email.errors.0 }}</div>
+      {% endif %}
+
+      <!-- First Name -->
+      <input type="text" name="first_name" placeholder="First Name" value="{{ form.first_name.value|default:'' }}">
+      {% if form.first_name.errors %}
+        <div class="error">{{ form.first_name.errors.0 }}</div>
+      {% endif %}
+
+      <!-- Last Name -->
+      <input type="text" name="last_name" placeholder="Last Name" value="{{ form.last_name.value|default:'' }}">
+      {% if form.last_name.errors %}
+        <div class="error">{{ form.last_name.errors.0 }}</div>
+      {% endif %}
+      <!-- Password -->
+      <input type="password" name="password1" placeholder="Password">
+      {% if form.password1.errors %}
+        <div class="error">{{ form.password1.errors.0 }}</div>
+      {% endif %}
+
+      <!-- Confirm Password -->
+      <input type="password" name="password2" placeholder="Confirm Password">
+      {% if form.password2.errors %}
+        <div class="error">{{ form.password2.errors.0 }}</div>
+      {% endif %}
+
+      <!-- Submit -->
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
   <div class="column-form">
-    <input type="text" placeholder="Username">
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
-    <a href="{% url 'dashboard' %}"><button type="button">Submit</button></a>
-  <a href="{% url 'login' %}"><button type="button">Log In</button></a>
-  <a href="{% url 'dashboard' %}"><button type="button">Search Without Authentication</button></a>
+    <a href="{% url 'login' %}"><button type="button">Log In</button></a>
+    <a href="{% url 'dashboard' %}?guest=true"><button type="button">Guest</button></a>
   </div>
 </body>
 </html>

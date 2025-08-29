@@ -1,10 +1,3 @@
-let currentEditingWatchlist = null;
-
-function showSection(id) {
-  document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
-}
-
 function addWatchlist() {
   const name = prompt("Enter watchlist name:");
   if (!name) return;
@@ -23,15 +16,15 @@ function addWatchlist() {
 }
 
 function editWatchlist(name, btn) {
-  currentEditingWatchlist = btn.closest('.watchlist-box');
-  document.getElementById('editTitle').innerText = name;
-  showSection('editWatchlist');
+  // Redirect to edit page with query param
+  window.location.href = `/edit_watchlist/?name=${encodeURIComponent(name)}`;
 }
 
+// Runs only on edit_watchlist.html
 function deleteWatchlist() {
-  if (currentEditingWatchlist) {
-    currentEditingWatchlist.remove();
-    showSection('dashboard');
+  if (confirm("Are you sure you want to delete this watchlist?")) {
+    // In the future: call backend API to delete watchlist
+    window.location.href = "/dashboard"; // Redirect back to dashboard
   }
 }
 
