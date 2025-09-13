@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="page-header"><h2>Goods Price Tracker</h2></div>
+  <div class="title"><h3>Log In</h3></div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="column-form">
+
+      <!-- Username -->
+      <input type="text" name="username" placeholder="Username" value="{{ request.POST.username }}">
+      {% if username_error %}
+        <div class="error">{{ username_error }}</div>
+      {% endif %}
+
+      <!-- Password -->
+      <input type="password" name="password" placeholder="Password">
+      {% if password_error %}
+        <div class="error">{{ password_error }}</div>
+      {% endif %}
+
+      <!-- Submit -->
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+  <div class="column-form">
+    <a href="{% url 'signup' %}"><button type="button">Sign Up</button></a>
+    <a href="{% url 'forgot_password' %}"><button type="button">Forgot Password</button></a>
+  </div>
+</body>
+</html>

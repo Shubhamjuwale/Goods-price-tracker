@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ product.name }} - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="page-header">
+    <div class="logo-title">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+      <span>{{ product.name }}</span>
+    </div>
+    <div class="top-right">
+      <a href="{% url 'dashboard' %}"><button type="button">Close</button></a>
+    </div>
+  </div>
+
+  <div class="product-detail center">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" class="detail-img">
+    {% endif %}
+    <h2>{{ product.name }}</h2>
+    <p><strong>Category:</strong> {{ product.category }}</p>
+    <p><strong>Tags:</strong> {{ product.tag }}</p>
+    <p><strong>Unit:</strong> {{ product.unit }}</p>
+    <p><strong>Price:</strong> ₹{{ product.price }}</p>
+    <p>{{ product.description }}</p>
+  </div>
+</body>
+</html>

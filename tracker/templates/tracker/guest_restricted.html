@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Restricted - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .overlay {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 80vh;
+      text-align: center;
+    }
+    .overlay button {
+      margin: 10px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="logo-title">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+      <span>Goods Price Tracker</span>
+    </div>
+  </div>
+
+  <div class="overlay">
+    <h2>To access {{ feature }}, sign in first.</h2>
+    <div>
+      <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+      <button onclick="window.history.back()">Close</button>
+    </div>
+  </div>
+</body>
+</html>
