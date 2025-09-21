@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Watchlist - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="page-header">
+    <div class="logo-title">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+      <span>Goods Price Tracker</span>
+    </div>
+    <div class="top-right">
+      <a href="{% url 'watchlist' %}"><button type="button">Close</button></a>
+    </div>
+  </div>
+
+  <div class="center">
+    <h3>Create New Watchlist</h3>
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Watchlist Name (max 20 chars)" maxlength="20" required>
+      <button type="submit">Create</button>
+    </form>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>

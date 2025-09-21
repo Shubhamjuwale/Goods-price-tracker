@@ -1,3 +1,4 @@
+console.log("script.js loaded ✅");
 function addWatchlist() {
   const name = prompt("Enter watchlist name:");
   if (!name) return;
@@ -23,7 +24,6 @@ function editWatchlist(name, btn) {
 // Runs only on edit_watchlist.html
 function deleteWatchlist() {
   if (confirm("Are you sure you want to delete this watchlist?")) {
-    // In the future: call backend API to delete watchlist
     window.location.href = "/dashboard"; // Redirect back to dashboard
   }
 }
@@ -55,3 +55,36 @@ function submitReview() {
   document.getElementById("submittedReviews").prepend(reviewBox);
   document.getElementById("reviewText").value = '';
 }
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("script.js loaded ✅");
+  const searchInput = document.getElementById("searchInput");
+  const resultsBox = document.getElementById("searchResults");
+
+  if (searchInput) {
+    searchInput.addEventListener("keyup", function() {
+      const query = this.value.trim();
+
+      if (query.length === 0) {
+        resultsBox.innerHTML = "";
+        return;
+      }
+
+      fetch(`/search-products/?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          resultsBox.innerHTML = "";
+          data.results.forEach(product => {
+            const li = document.createElement("li");
+            li.textContent = product.name;
+            li.classList.add("result-item");
+
+            li.onclick = () => {
+              window.location.href = `/product/${product.id}/`;
+            };
+
+            resultsBox.appendChild(li);
+          });
+        });
+    });
+  }
+});

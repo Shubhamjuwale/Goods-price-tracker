@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ product.name }} - Goods Price Tracker</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+  <!-- Header -->
+  <div class="page-header">
+    <div class="logo-title">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+      <span>Goods Price Tracker</span>
+    </div>
+    <div class="top-right">
+      <a href="{% url 'dashboard' %}"><button type="button">Close</button></a>
+    </div>
+  </div>
+   
+  <!-- Product Details -->
+  <div class="product-detail-container">
+    <!-- Left: Image -->
+    <div class="product-image">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+      {% else %}
+        <img src="{% static 'images/default.png' %}" alt="No image">
+      {% endif %}
+    <div class="product-description">
+        <h3>Description</h3>
+        <p>{{ product.description }}</p>
+    </div>
+    </div>
+    
+    <!-- Right: Info -->
+    <div class="product-info">
+      <h2>{{ product.name }}</h2>
+      <div><strong>Category:</strong> {{ product.category }}</div>
+      <div><strong>Tag:</strong> {{ product.tag }}</div>
+      <div><strong>Unit:</strong> {{ product.unit }}</div>
+      <div class="price-box1"><strong>Price:</strong> ₹{{ product.price }}</div>
+      <form id="add-watchlist-form" method="post">
+      {% csrf_token %}
+      <label for="watchlist_id">Add to Watchlist:</label>
+      <select id="watchlist_id" name="watchlist_id" required>
+      {% for wl in watchlists %}
+        <option value="{{ wl.watchlist_id }}">{{ wl.name }}</option>
+      {% endfor %}
+      </select>
+      <button type="button" onclick="addToWatchlist('{{ product.product_id }}')">
+      Add
+      </button>
+      <div style="margin-top: 40px; width: 80%; margin-left: auto; margin-right: auto;">
+  <h3>Price History</h3>
+  <canvas id="priceChart"></canvas>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </form>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function addToWatchlist(product_id){
+    let watchlist_id = $("#watchlist_id").val();
+
+    $.post("{% url 'ajax_add_to_watchlist' %}", {
+        watchlist_id: watchlist_id,
+        product_id: product_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+    }, function(data){
+        alert(data.message);
+    });
+  }
+  const labels = JSON.parse('{{ labels_json|escapejs }}');
+const data = JSON.parse('{{ data_json|escapejs }}');
+
+const ctx = document.getElementById('priceChart').getContext('2d');
+const priceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Price (₹)',
+            data: data,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.3,
+            fill: true,
+            pointRadius: 4,
+            pointHoverRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            title: { display: true, text: 'Product Price Trend Over Time' }
+        },
+        scales: {
+            x: { title: { display: true, text: 'Date' } },
+            y: { title: { display: true, text: 'Price (₹)' }, beginAtZero: false }
+        }
+    }
+});
+</script>
+</body>
+</html>

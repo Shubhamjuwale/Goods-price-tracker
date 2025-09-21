@@ -5,27 +5,70 @@
   <meta charset="UTF-8">
   <title>Dashboard - Goods Price Tracker</title>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <script src="{% static 'js/script.js' %}"></script>
 </head>
 <body>
+  <!-- Header -->
   <div class="page-header">
-    <h2>Goods Price Tracker</h2>
+    <!-- Left: Logo + Title -->
+    <div class="logo-title">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+      <span>Goods Price Tracker</span>
+    </div>
+
+    <!-- Center: Nav links -->
+    <div class="nav-links">
+      <a href="{% url 'watchlist' %}">Watchlist</a>
+      <a href="{% url 'review' %}">Review</a>
+    </div>
+
+    <!-- Right: Close button -->
     <div class="top-right">
+      <div class="nav-links">
+       <a href="{% url 'signup' %}">Sign In</a>
+       <a href="{% url 'login' %}">Login</a>
+      </div>
       <a href="{% url 'signup' %}"><button type="button">Close</button></a>
     </div>
   </div>
 
-  <div class="rowcenter">
-    <button onclick="addWatchlist()">Add Watchlist</button>
-    <a href="{% url 'search' %}"><button type="button">Search</button></a>
-    <a href="{% url 'review' %}"><button type="button">Enter Review</button></a>
+  <!-- Search bar -->
+    <div class="center">
+  <input type="text" id="searchInput" placeholder="Search Product" autocomplete="off">
+<ul id="searchResults" class="search-results"></ul>
+
   </div>
 
-  <div id="watchlists" style="margin-top: 20px;"></div>
-  {% if guest %}
-  <p>You are browsing as guest. Only search is available.</p>
-  <!-- hide watchlist/review buttons -->
-{% endif %}
+  <!-- Tags filter -->
+  <div class="tags-bar">
+    <a href="?tag=all" class="tag {% if selected_tag == 'all' %}active{% endif %}">All</a>
+    {% for t in tags %}
+      <a href="?tag={{ t }}" class="tag {% if selected_tag == t %}active{% endif %}">{{ t }}</a>
+    {% endfor %}
+  </div>
 
+  <!-- Products grid -->
+  <div class="products-grid">
+    {% for p in products %}
+      <a href="{% url 'product_detail' p.product_id %}" class="product-card">
+        {% if p.image %}
+          <img src="{{ p.image.url }}" alt="{{ p.name }}">
+        {% else %}
+          <img src="{% static 'images/default.png' %}" alt="No image">
+        {% endif %}
+        <h4>{{ p.name }}</h4>
+        <div class="price-box">₹{{ p.price }}</div>
+      </a>
+    {% empty %}
+      <p style="text-align:center; margin-top:20px;">No products available.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Show more -->
+  <div class="center">
+    <a href="?tag={{ selected_tag }}&limit={{ limit|add:20 }}">
+      <button>Show More</button>
+    </a>
+  </div>
+  <script src="{% static 'JS/script.js' %}"></script>
 </body>
 </html>

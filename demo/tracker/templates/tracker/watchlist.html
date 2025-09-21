@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Watchlists - Goods Price Tracker</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="page-header">
+  <div class="logo-title">
+    <img src="{% static 'images/logo.png' %}" class="logo">
+    <span>Goods Price Tracker</span>
+  </div>
+
+  <div class="top-right">
+    <a href="{% url 'dashboard' %}"><button>Close</button></a>
+  </div>
+</div>
+<div class="center">
+  <h3>Your Watchlists</h3>
+  <a href="{% url 'create_watchlist' %}"><button>Create Watchlist</button></a>
+  <div id="watchlists" style="margin-top:20px;"align-items:Left;>
+    {% for wl in watchlists %}
+      <div class="watchlist-box">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>{{ wl.name|slice:":20" }}</strong>
+          <div>
+            <a href="{% url 'remove_watchlist' wl.watchlist_id %}"><button>Remove</button></a>
+            <a href="{% url 'dashboard' %}"><button>Add Item</button></a>
+          </div>
+        </div>
+        <div class="watchlist-items" id="watchlist-items-{{ wl.watchlist_id }}">
+          {% for p in wl.products.all|slice:":5" %}
+            <div class="item-row">
+              <a href="{% url 'product_detail' p.product_id %}">{{ p.name }}</a>
+              <span>₹{{ p.price }}</span>
+              <a href="{% url 'remove_item_from_watchlist' wl.watchlist_id p.product_id %}"><button>Remove Item</button></a>
+            </div>
+          {% endfor %}
+        </div>
+        {% if wl.products.count > 5 %}
+          <button class="show-more-btn" data-wl="{{ wl.watchlist_id }}" data-offset="5">Show More</button>
+
+<script>
+$('.show-more-btn').click(function(){
+    let wl_id = $(this).data('wl');
+    showMore(wl_id, this);
+});
+</script>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No watchlists yet.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+function showMore(wl_id, btn){
+    let offset = $(btn).data('offset') || 5;
+    $.get(`/watchlist/ajax/show_more/${wl_id}/?offset=${offset}`, function(data){
+        if(data.items.length === 0){
+            $(btn).hide();
+            return;
+        }
+        data.items.forEach(function(item){
+            $('#watchlist-items-'+wl_id).append(`
+                <div class="item-row">
+                    <a href="/product/${item.id}/">${item.name}</a>
+                    <span>₹${item.price}</span>
+                    <button onclick="removeItem(${wl_id}, ${item.id}, this)">Remove</button>
+                </div>
+            `);
+        });
+        $(btn).data('offset', offset + 5);
+    });
+}
+
+function removeItem(wl_id, product_id, btn){
+    $.get(`/watchlist/${wl_id}/remove/${product_id}/`, function(){
+        $(btn).closest('.item-row').remove();
+    });
+}
+
+function addToWatchlist(product_id){
+    let watchlist_id = prompt("Enter Watchlist ID to add this product:");
+    if(!watchlist_id) return;
+    $.post("/watchlist/ajax/add_item/", {
+        watchlist_id: watchlist_id,
+        product_id: product_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+    }, function(data){
+        alert(data.message);
+    });
+}
+</script>
+</body>
+</html>

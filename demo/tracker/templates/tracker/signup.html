@@ -7,9 +7,18 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <div class="page-header"><h2>Goods Price Tracker</h2></div>
+  <div class="page-header">
+  <div class="logo-title">
+    <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+    <span>Goods Price Tracker</span>
+  </div>
+  <div class="top-right">
+      <a href="{% url 'dashboard' %}"><button type="button">Close</button></a>
+    </div>
+  </div>
   <div class="title"><h3>Sign Up</h3></div>
-
+  
+  
   <form method="post">
     {% csrf_token %}
     <div class="column-form">
