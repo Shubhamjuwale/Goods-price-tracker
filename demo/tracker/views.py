@@ -52,7 +52,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            request.session["is_guest"] = False  # clear guest mode
+            request.session["is_guest"] = False  
             return redirect("dashboard")
         else:
             password_error = "Incorrect password"
@@ -63,7 +63,19 @@ def login_view(request):
     })
 
 def dashboard(request):
-    # Set guest mode if not logged in
+    tags = ['tag1', 'tag2']  # or get from database
+    products = Product.objects.all()  # or filtered queryset
+    selected_tag = request.GET.get('tag', 'all')
+    limit = int(request.GET.get('limit', 20))
+
+    context = {
+        'tags': tags,
+        'products': products[:limit],
+        'selected_tag': selected_tag,
+        'limit': limit,
+    }
+
+    
     if not request.user.is_authenticated and request.GET.get("guest") == "true":
         request.session["is_guest"] = True
     elif request.user.is_authenticated:
@@ -119,7 +131,7 @@ def search_products(request):
     if query:
         products = Product.objects.filter(
             Q(name__icontains=query) | Q(category__icontains=query) | Q(tag__icontains=query)
-        )[:10]  # limit results to 10 for now
+        )[:10] 
         results = [
             {"id": p.pk, "name": p.name}
             for p in products
@@ -128,15 +140,15 @@ def search_products(request):
     return JsonResponse({"results": results})
 
 def review(request):
-    # If guest mode, show restriction
+   
     if request.session.get("is_guest", False):
         return render(request, "tracker/guest_restricted.html", {"feature": "Review"})
 
-    # If not logged in, also restrict
+   
     if not request.user.is_authenticated:
         return render(request, "tracker/guest_restricted.html", {"feature": "Review"})
 
-    # Otherwise show normal review page
+   
     if request.method == "POST":
         comment = request.POST.get("comment")
         if comment:
@@ -234,25 +246,25 @@ def forgot_password(request):
         new_password = request.POST.get("password", "").strip()
         confirm_password = request.POST.get("confirm_password", "").strip()
 
-        # Check email exists
+        
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             errors["email"] = "No user found with this email."
 
-        # Username validation
+        
         if not (8 <= len(new_username) <= 15):
             errors["username"] = "Username must be 8-15 characters long."
         elif User.objects.filter(username=new_username).exclude(email=email).exists():
             errors["username"] = "Username is already in use."
 
-        # Password validation
+        
         if not (8 <= len(new_password) <= 15):
             errors["password"] = "Password must be 8-15 characters long."
         if new_password != confirm_password:
             errors["confirm_password"] = "Passwords do not match."
 
-        # If no errors, update user
+        
         if not errors:
             user.username = new_username
             user.password = make_password(new_password)
