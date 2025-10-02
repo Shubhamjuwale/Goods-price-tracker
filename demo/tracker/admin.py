@@ -23,7 +23,7 @@ class ProductAdmin(admin.ModelAdmin):
                 defaults={'price': product.price}
             )
 
-        self.message_user(request, "✅ Current prices saved to Price history!")
+        self.message_user(request, " Current prices saved to Price history!")
 
     save_prices_to_history.short_description = "Save current prices to Price history"
 
@@ -45,4 +45,4 @@ class ReviewAdmin(admin.ModelAdmin):
 class WatchlistAdmin(admin.ModelAdmin):
     list_display = ['name', 'user']
     search_fields = ['name', 'user__username']
-    filter_horizontal = ['products']  # better UI for ManyToManyField
+    filter_horizontal = ['products']  

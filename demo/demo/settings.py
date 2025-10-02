@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = 'django-insecure-$1-^pr-db99aoq-^-j_j)lqv&0w=5^+th)zwpwwb#vt!)v@1(6'  # For production, move to env variable
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']  # Replace '*' with your Render URL in production for more security
 
 # Application definition
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serves static files in production
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

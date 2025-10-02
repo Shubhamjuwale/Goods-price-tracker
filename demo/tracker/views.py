@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from .forms import SignUpForm
 from .models import Watchlist, Product, Review
-from django.db.models import Q
+from django.db.models import Q,Avg
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -114,14 +114,36 @@ def product_detail(request, product_id):
 
     # Get price history
     prices = product.prices.order_by('price_date')
-    labels = [p.price_date.strftime('%Y-%m-%d') for p in prices]
+    labels = [p.price_date.strftime('%b') for p in prices]
     data = [p.price for p in prices]
+
+    # Calculate Peak Month, Low Month, Best Time to Buy
+    # Create a dict with month abbreviation as key and average price as value
+    month_price_dict = {}
+    for p in prices:
+        month_abbr = p.price_date.strftime('%b')
+        if month_abbr not in month_price_dict:
+            month_price_dict[month_abbr] = []
+        month_price_dict[month_abbr].append(p.price)
+
+    # Average price per month
+    avg_month_price = {month: sum(prices)/len(prices) for month, prices in month_price_dict.items()}
+
+    if avg_month_price:
+        peak_month = max(avg_month_price, key=avg_month_price.get)
+        low_month = min(avg_month_price, key=avg_month_price.get)
+        best_time_to_buy = low_month
+    else:
+        peak_month = low_month = best_time_to_buy = None
 
     return render(request, "tracker/product_detail.html", {
         "product": product,
         "watchlists": watchlists,
         "labels_json": json.dumps(labels),
         "data_json": json.dumps(data),
+        "peak_month": peak_month,
+        "low_month": low_month,
+        "best_time_to_buy": best_time_to_buy,
     })
 
 def search_products(request):

@@ -1,4 +1,4 @@
-console.log("script.js loaded ✅");
+
 function addWatchlist() {
   const name = prompt("Enter watchlist name:");
   if (!name) return;
@@ -56,7 +56,7 @@ function submitReview() {
   document.getElementById("reviewText").value = '';
 }
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("script.js loaded ✅");
+
   const searchInput = document.getElementById("searchInput");
   const resultsBox = document.getElementById("searchResults");
 
